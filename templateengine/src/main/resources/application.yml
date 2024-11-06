@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: templateengine
+  datasource:
+    url: "jdbc:postgresql://localhost:5432/templateengine"
+    username: "postgres"
+    password: "Test1234"
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: validate
