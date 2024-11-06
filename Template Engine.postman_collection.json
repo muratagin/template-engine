@@ -1,0 +1,52 @@
+{
+	"info": {
+		"_postman_id": "80dd0e93-24be-476d-bacd-f84b00a30266",
+		"name": "Template Engine",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "1515578"
+	},
+	"item": [
+		{
+			"name": "Process Request",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Stakeholder-Id",
+						"value": "e289b474-3930-4a31-a915-bb69c9e420d2",
+						"type": "text"
+					},
+					{
+						"key": "AuthToken",
+						"value": "Bearer abcdef12345",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"firstName\": \"John\",\n  \"middleName\": \"A.\",\n  \"lastName\": \"Doe\",\n  \"age\": 30,\n  \"correlationId\": \"xyz-123\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/process",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"process"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
