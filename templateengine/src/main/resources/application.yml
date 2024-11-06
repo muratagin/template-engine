@@ -2,10 +2,16 @@ spring:
   application:
     name: templateengine
   datasource:
-    url: "jdbc:postgresql://localhost:5432/templateengine"
+    url: "jdbc:postgresql://localhost:5432/template_engine_db"
     username: "postgres"
     password: "Test1234"
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: validate
+      ddl-auto: update
+  data:
+    redis:
+      host: localhost
+      port: 6379
+  cache:
+    type: redis

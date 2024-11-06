@@ -3,7 +3,6 @@ package com.muratagin.templateengine.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.muratagin.templateengine.configuration.StakeholderTemplateConfig;
 import com.muratagin.templateengine.entity.StakeholderTemplate;
-import com.muratagin.templateengine.repository.StakeholderTemplateRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.expression.Expression;
@@ -22,21 +21,15 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class StakeholderTemplateService {
 
-    private final StakeholderTemplateRepository stakeholderTemplateRepository;
+    private final StakeholderTemplateCacheService stakeholderTemplateCacheService;
 
     public void processRequest(HttpServletRequest request, UUID stakeholderId) throws Exception {
 
-        Optional<StakeholderTemplate> stakeholderTemplateOptional = stakeholderTemplateRepository.findById(stakeholderId);
-
-        if (stakeholderTemplateOptional.isEmpty()) {
-            throw new Exception("Template not found for stakeholder: " + stakeholderId);
-        }
-
-        StakeholderTemplate stakeholderTemplate = stakeholderTemplateOptional.get();
+        StakeholderTemplate cachedStakeholderTemplate = stakeholderTemplateCacheService.getStakeholderTemplateById(stakeholderId);
 
         // Parse the template JSON
         ObjectMapper mapper = new ObjectMapper();
-        StakeholderTemplateConfig stakeholderTemplateConfig = mapper.readValue(stakeholderTemplate.getTemplate(), StakeholderTemplateConfig.class);
+        StakeholderTemplateConfig stakeholderTemplateConfig = mapper.readValue(cachedStakeholderTemplate.getTemplate(), StakeholderTemplateConfig.class);
 
         // Extract the source data from the incoming request
         Map<String, Object> sourceData = extractDataFromRequest(request);
@@ -122,7 +115,7 @@ public class StakeholderTemplateService {
         // Set content type to JSON
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
 
-        HttpEntity<Object> requestEntity = null;
+        HttpEntity<Object> requestEntity;
         if (body != null && !body.isEmpty()) {
             requestEntity = new HttpEntity<>(body, httpHeaders);
         } else {
@@ -139,7 +132,7 @@ public class StakeholderTemplateService {
                 throw new Exception("Unsupported method: " + method);
             }
         } catch (Exception e) {
-            throw new Exception("Cannot call target endpoint");
+            throw new Exception("Cannot call target endpoint" + e.getMessage());
         }
 
         // Handle the response as needed

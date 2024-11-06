@@ -4,10 +4,10 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 -- Create the "templateengine" database
 CREATE DATABASE templateengine;
 
--- Connect to the "templateengine" database
-\connect templateengine;
+-- Connect to the "template_engine_db" database
+\connect template_engine_db;
 
--- Create the "uuid-ossp" extension in the "templateengine" database
+-- Create the "uuid-ossp" extension in the "template_engine_db" database
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 -- Create the table
